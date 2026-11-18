@@ -1,0 +1,16 @@
+# Local development profile. Activate with:
+#   ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+#   or SPRING_PROFILES_ACTIVE=local
+
+spring:
+  config:
+    import: optional:file:.env[.properties]  # read KEY=VALUE pairs from ./.env so local runs see the same vars as compose
+
+management:
+  endpoint:
+    health:
+      show-details: always                   # full health details are fine on your own machine
+
+logging:
+  level:
+    com.service.market_lens: DEBUG

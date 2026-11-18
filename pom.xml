@@ -21,16 +21,71 @@
 	</licenses>
 	<properties>
 		<java.version>21</java.version>
+		<!-- Versions for libraries Spring Boot does NOT manage -->
+		<spring-ai.version>2.0.2</spring-ai.version>
+		<wiremock.version>3.13.2</wiremock.version>
 	</properties>
+
+	<!-- Spring AI is not part of Boot's BOM: import its own BOM so all Spring AI modules share one version -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>${spring-ai.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
+		<!-- Web: REST controllers on embedded Tomcat (Boot 4 name for the former starter-web) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+		</dependency>
+		<!-- Health/info endpoints (/actuator/health) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- Bean Validation (@Valid, @NotBlank, @Pattern) for requests and @ConfigurationProperties -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<!-- ===== Test ===== -->
+		<!-- JUnit 5, AssertJ, Mockito, Spring test support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- @WebMvcTest / MockMvc slice tests (separate module since Boot 4) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Testcontainers: real Redis etc. in Docker for *IT tests (versions managed by Boot) -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- WireMock: in-process fake HTTP server for provider tests.
+		     "standalone" = shaded jar, so its Jetty/Jackson can't clash with Boot's -->
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>${wiremock.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -40,6 +95,12 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- Runs *IT tests in the integration-test phase (goals preconfigured by the Boot parent).
+			     Surefire keeps its defaults (*Test, *Tests). -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,3 +1,40 @@
 spring:
   application:
     name: market-lens
+  data:
+    redis:                                   # used once the Redis starter is added (Phase 7)
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never                    # don't leak internals publicly; the local profile shows them
+      probes:
+        enabled: true                        # /actuator/health/liveness and /readiness for containers
+  info:
+    env:
+      enabled: true                          # publish the info.* properties below on /actuator/info
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: AI-assisted stock analysis backend. Not financial advice.
+
+# Our own settings, bound to the MarketLensProperties record (config package).
+marketlens:
+  market-data:
+    provider: ${MARKET_DATA_PROVIDER:fmp}
+    api-key: ${MARKET_DATA_API_KEY:}
+  llm:
+    model: ${LLM_MODEL:llama3.2}             # default fits a local Ollama model
+    api-key: ${LLM_API_KEY:}
+  cache:
+    analysis-ttl: ${CACHE_TTL_MINUTES:60}m   # Duration: "60m" = 60 minutes
