@@ -1,0 +1,23 @@
+# Keep the build context small and secret-free.
+# Build output / IDE / VCS
+target/
+.git/
+.gitignore
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Secrets — must never end up in an image layer
+.env
+*.env
+!.env.example
+
+# Not needed to build the jar
+context/
+README.md
+LICENSE
+CLAUDE.md
+compose.yaml
+Dockerfile
+.dockerignore

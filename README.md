@@ -228,9 +228,10 @@ market-lens/
 ```
 
 - Metrics engine and scoring: pure unit tests
-- Provider clients: WireMock stubs, no real API calls in CI
+- Provider clients: in-process WireMock (runs inside the test JVM, no Docker), no real API calls in CI
 - LLM layer: mocked `ChatClient`; prompt and output-mapping tests
-- Redis: Testcontainers
+- Redis: Testcontainers (`*IT`, needs a Docker/Podman socket)
+- Demo / manual runs without API keys (planned): `docker compose --profile mock up` serves fake market data from a WireMock container
 
 ## License
 
