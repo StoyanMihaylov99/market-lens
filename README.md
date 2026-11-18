@@ -98,9 +98,8 @@ Most providers have a free tier with tight rate limits. That is exactly why the 
 
 ## Getting started
 
-> 🚧 **Project status:** early development. The steps below describe the **target** setup. `.env.example`,
-> `compose.yaml`, the Dockerfile and the `/api/v1/...` endpoints arrive in phases 0–8 of
-> [`context/ROADMAP.md`](context/ROADMAP.md). Today only `./mvnw test` works.
+> ℹ️ The container setup below works today (app + Redis, health check at `/actuator/health`).
+> The `/api/v1/...` endpoints and Swagger UI arrive in later phases — see [`context/ROADMAP.md`](context/ROADMAP.md).
 
 ### Prerequisites
 
