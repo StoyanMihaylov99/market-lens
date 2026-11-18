@@ -1,0 +1,49 @@
+# Base CI: build + all tests on every PR to main and every push to main.
+# No secrets, no real external calls (WireMock / mocks / Testcontainers) -> safe for fork PRs.
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Least privilege for the automatic GITHUB_TOKEN: CI only needs to read the code.
+permissions:
+  contents: read
+
+# One run per PR (or per branch for pushes); a newer push cancels the older, now-irrelevant run.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven                # caches ~/.m2/repository, keyed on pom.xml hash
+
+      # test (Surefire: *Test, *Tests) + integration-test (Failsafe: *IT, Docker is built into the runner)
+      - name: Build and test
+        run: ./mvnw -B verify
+
+      # Runs even when the build failed -- that's exactly when the reports are needed.
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            target/surefire-reports/
+            target/failsafe-reports/
+          if-no-files-found: ignore
+          retention-days: 7
