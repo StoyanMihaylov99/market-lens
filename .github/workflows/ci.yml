@@ -1,5 +1,3 @@
-# Base CI: build + all tests on every PR to main and every push to main.
-# No secrets, no real external calls (WireMock / mocks / Testcontainers) -> safe for fork PRs.
 name: ci
 
 on:
