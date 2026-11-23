@@ -10,7 +10,7 @@ import java.util.Objects;
  * Latest market price of a company's stock.
  *
  * @param price             last traded price in the trading currency
- * @param marketCap         market capitalisation as reported by the vendor (accounts for share classes)
+ * @param marketCap         market capitalisation, as reported by the vendor or computed by the adapter as price × shares outstanding
  * @param sharesOutstanding total shares outstanding
  * @param asOf              when the price was observed (vendor timestamp)
  */

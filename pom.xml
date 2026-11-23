@@ -55,6 +55,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+		<!-- Outgoing HTTP: auto-configured RestClient.Builder (Jackson converters, metrics, timeouts via HttpClientSettings).
+		     Boot 4 ships client support as its own module; the webmvc starter no longer brings it. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-restclient</artifactId>
+		</dependency>
 
 		<!-- ===== Test ===== -->
 		<!-- JUnit 5, AssertJ, Mockito, Spring test support -->

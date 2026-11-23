@@ -31,8 +31,13 @@ info:
 # Our own settings, bound to the MarketLensProperties record (config package).
 marketlens:
   market-data:
-    provider: ${MARKET_DATA_PROVIDER:fmp}
+    provider: ${MARKET_DATA_PROVIDER:alphavantage}
     api-key: ${MARKET_DATA_API_KEY:}
+    alphavantage:                            # bound to AlphaVantageProperties; used when provider=alphavantage
+      base-url: https://www.alphavantage.co  # the mock profile points this at WireMock
+      connect-timeout: 5s
+      read-timeout: 10s
+      min-request-interval: 1s               # free tier rejects bursts; the 25/day cap is handled by caching (Phase 7)
   llm:
     model: ${LLM_MODEL:llama3.2}             # default fits a local Ollama model
     api-key: ${LLM_API_KEY:}
