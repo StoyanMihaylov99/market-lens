@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Current state of a market index (e.g. {@code ^GSPC}) plus recent closes for trend and volatility calculations.
+ * Current state of a market index (e.g. {@code ^GSPC}, or an ETF proxy such as {@code SPY}) plus recent closes for trend and volatility calculations.
  *
  * @param changePercent        today's change as a <b>decimal fraction</b> ({@code 0.0123} = +1.23%)
  * @param fiftyDayAverage      50-day moving average of the close

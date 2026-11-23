@@ -20,7 +20,7 @@ class MarketLensPropertiesTest {
     private final ApplicationContextRunner runner = new ApplicationContextRunner()
             .withUserConfiguration(Config.class)
             .withPropertyValues(
-                    "marketlens.market-data.provider=fmp",
+                    "marketlens.market-data.provider=alphavantage",
                     "marketlens.llm.model=llama3.2",
                     "marketlens.cache.analysis-ttl=60m");
 
@@ -28,7 +28,7 @@ class MarketLensPropertiesTest {
     void bindsValidConfiguration() {
         runner.run(context -> {
             var props = context.getBean(MarketLensProperties.class);
-            assertThat(props.marketData().provider()).isEqualTo("fmp");
+            assertThat(props.marketData().provider()).isEqualTo("alphavantage");
             assertThat(props.cache().analysisTtl()).isEqualTo(Duration.ofMinutes(60));
         });
     }

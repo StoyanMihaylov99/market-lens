@@ -90,9 +90,9 @@ The market data provider is hidden behind an interface, so providers can be swap
 
 | Data | Candidate providers |
 |---|---|
-| Fundamentals, ratios, earnings | Financial Modeling Prep, Alpha Vantage, Finnhub |
+| Fundamentals, ratios, earnings | **Alpha Vantage** (chosen provider); Financial Modeling Prep, Finnhub as alternatives |
 | Earnings filings (10-Q / 10-K) | SEC EDGAR (free, official) |
-| Index data (S&P 500, Nasdaq, Dow) | Alpha Vantage, Finnhub, Twelve Data |
+| Index data (S&P 500, Nasdaq, Dow) | **Alpha Vantage** via ETF proxies (`SPY`, `QQQ`, `DIA`); Finnhub, Twelve Data as alternatives |
 
 Most providers have a free tier with tight rate limits. That is exactly why the Redis cache and rate limiter exist. Check each provider's terms before deploying anything publicly.
 
@@ -147,7 +147,7 @@ curl http://localhost:8080/api/v1/analysis/AAPL
 | Variable | Description | Example |
 |---|---|---|
 | `MARKET_DATA_API_KEY` | Market data provider key | `abc123` |
-| `MARKET_DATA_PROVIDER` | Provider implementation to use | `fmp` |
+| `MARKET_DATA_PROVIDER` | Provider implementation to use | `alphavantage` |
 | `LLM_API_KEY` | LLM provider key | `sk-...` |
 | `LLM_MODEL` | Model name | `your-model-id` |
 | `REDIS_HOST` / `REDIS_PORT` | Redis connection | `redis` / `6379` |
