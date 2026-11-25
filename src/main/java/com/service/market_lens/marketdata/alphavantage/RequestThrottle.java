@@ -11,9 +11,10 @@ import java.util.function.LongSupplier;
  * Minimal client-side rate limiter: guarantees at least {@code minInterval} between the starts of two requests.
  * Callers <b>wait</b> for their slot instead of failing, so a burst of N calls takes about N × interval.
  * <p>
- * Why: Alpha Vantage's free tier rejects bursts (it asks for about 1 request per second) and answers them with an HTTP
- * 200 {@code Information} body that still counts against the 25/day quota. Spacing calls avoids wasting quota. The
- * daily cap itself is handled by caching (Phase 7), not here.
+ * Why: Alpha Vantage's free tier rejects bursts with an HTTP 200 {@code Information} body (sometimes misleadingly
+ * saying "premium endpoint") that still counts against the 25/day quota. 1 s spacing was too short on 2026-11-23;
+ * 13 s worked; the configured default is 12 s (the historic free limit of 5/minute). The daily cap itself is handled
+ * by caching (Phase 7), not here.
  * <p>
  * Uses a {@link ReentrantLock} rather than {@code synchronized}: sleeping inside {@code synchronized} pins the carrier
  * thread when the app runs on virtual threads (Java 21). Time source and sleep are injectable for deterministic tests.

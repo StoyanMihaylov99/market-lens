@@ -1,0 +1,10 @@
+# Mock profile: Alpha Vantage is replaced by WireMock replaying recorded fixtures (see compose.mock.yaml).
+# Activate with SPRING_PROFILES_ACTIVE=mock. Also enables the temporary raw endpoint.
+
+marketlens:
+  market-data:
+    provider: alphavantage
+    api-key: mock-key                                  # literal on purpose: your real key is never sent to the mock
+    alphavantage:
+      base-url: ${WIREMOCK_URL:http://wiremock:8080}   # inside compose; for a host-run app: WIREMOCK_URL=http://localhost:8089
+      min-request-interval: 0s                         # no quota to protect

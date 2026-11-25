@@ -1,0 +1,420 @@
+{
+  "mappings": [
+    {
+      "name": "GLOBAL_QUOTE AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "GLOBAL_QUOTE"
+          },
+          "symbol": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "global_quote-AAPL.json"
+      }
+    },
+    {
+      "name": "SYMBOL_SEARCH AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "SYMBOL_SEARCH"
+          },
+          "keywords": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "symbol_search-AAPL.json"
+      }
+    },
+    {
+      "name": "INCOME_STATEMENT AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "INCOME_STATEMENT"
+          },
+          "symbol": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "income_statement-AAPL.json"
+      }
+    },
+    {
+      "name": "BALANCE_SHEET AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "BALANCE_SHEET"
+          },
+          "symbol": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "balance_sheet-AAPL.json"
+      }
+    },
+    {
+      "name": "CASH_FLOW AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "CASH_FLOW"
+          },
+          "symbol": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "cash_flow-AAPL.json"
+      }
+    },
+    {
+      "name": "EARNINGS AAPL",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "EARNINGS"
+          },
+          "symbol": {
+            "equalTo": "AAPL"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "earnings-AAPL.json"
+      }
+    },
+    {
+      "name": "GLOBAL_QUOTE PLUG",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "GLOBAL_QUOTE"
+          },
+          "symbol": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "global_quote-PLUG.json"
+      }
+    },
+    {
+      "name": "INCOME_STATEMENT PLUG",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "INCOME_STATEMENT"
+          },
+          "symbol": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "income_statement-PLUG.json"
+      }
+    },
+    {
+      "name": "BALANCE_SHEET PLUG",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "BALANCE_SHEET"
+          },
+          "symbol": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "balance_sheet-PLUG.json"
+      }
+    },
+    {
+      "name": "CASH_FLOW PLUG",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "CASH_FLOW"
+          },
+          "symbol": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "cash_flow-PLUG.json"
+      }
+    },
+    {
+      "name": "EARNINGS PLUG",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "EARNINGS"
+          },
+          "symbol": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "earnings-PLUG.json"
+      }
+    },
+    {
+      "name": "TIME_SERIES_DAILY SPY",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "TIME_SERIES_DAILY"
+          },
+          "symbol": {
+            "equalTo": "SPY"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "time_series_daily-SPY.json"
+      }
+    },
+    {
+      "name": "SMA SPY",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "SMA"
+          },
+          "symbol": {
+            "equalTo": "SPY"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "sma200-SPY.json"
+      }
+    },
+    {
+      "name": "TIME_SERIES_DAILY UNKNOWNXYZ",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "TIME_SERIES_DAILY"
+          },
+          "symbol": {
+            "equalTo": "UNKNOWNXYZ"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "time_series_daily-UNKNOWNXYZ.json"
+      }
+    },
+    {
+      "name": "SYMBOL_SEARCH PLUG (hand-written, not recorded)",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query",
+        "queryParameters": {
+          "function": {
+            "equalTo": "SYMBOL_SEARCH"
+          },
+          "keywords": {
+            "equalTo": "PLUG"
+          },
+          "apikey": {
+            "matches": ".+"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "bestMatches": [
+            {
+              "1. symbol": "PLUG",
+              "2. name": "Plug Power Inc",
+              "3. type": "Equity",
+              "4. region": "United States",
+              "8. currency": "USD",
+              "9. matchScore": "1.0000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "anything else: behave like Alpha Vantage for an unknown ticker",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/query"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {}
+      }
+    }
+  ]
+}
