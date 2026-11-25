@@ -63,12 +63,12 @@ class AlphaVantageResponsesTest {
     }
 
     @Test
-    void premiumInformationIsUnavailableNotRateLimited() {
+    void premiumInformationIsRateLimitedBecauseBurstsAlsoSayPremium() {
+        // observed 2026-11-23: free SYMBOL_SEARCH answered this when called 1 s after another request
         var body = json("{\"Information\": \"Thank you for using Alpha Vantage! This is a premium endpoint.\"}");
 
-        assertThatThrownBy(() -> check("OVERVIEW", "AAPL", body))
-                .isInstanceOf(ProviderUnavailableException.class)
-                .hasMessageContaining("OVERVIEW requires a premium plan");
+        assertThatThrownBy(() -> check("SYMBOL_SEARCH", "AAPL", body))
+                .isInstanceOf(ProviderRateLimitedException.class);
     }
 
     @Test

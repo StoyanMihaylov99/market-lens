@@ -1,0 +1,24 @@
+# Mock mode: the app talks to a WireMock container that replays the recorded Alpha Vantage fixtures.
+# No API key or quota needed. Layered on top of compose.yaml (an override file merges into the base file):
+#
+#   docker compose -f compose.yaml -f compose.mock.yaml up --build
+#   podman compose -f compose.yaml -f compose.mock.yaml up --build
+#
+# Demo tickers: AAPL, PLUG (fundamentals + earnings), SPY (index). Anything else answers like an unknown ticker.
+
+services:
+  app:
+    environment:
+      SPRING_PROFILES_ACTIVE: mock     # loads application-mock.yaml: base URL -> wiremock, dummy API key
+    depends_on:
+      wiremock:
+        condition: service_started
+
+  wiremock:
+    image: docker.io/wiremock/wiremock:3.13.2   # same version as the test dependency
+    ports:
+      - "8089:8080"                    # host port 8089, so a host-run app (or you, with curl) can reach it too
+    volumes:
+      # :ro = read-only, :z = SELinux relabel (needed by Podman on Fedora/RHEL, ignored elsewhere)
+      - ./wiremock/mappings:/home/wiremock/mappings:ro,z
+      - ./src/test/resources/fixtures/alphavantage:/home/wiremock/__files:ro,z

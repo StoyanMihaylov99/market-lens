@@ -37,7 +37,7 @@ marketlens:
       base-url: https://www.alphavantage.co  # the mock profile points this at WireMock
       connect-timeout: 5s
       read-timeout: 10s
-      min-request-interval: 1s               # free tier rejects bursts; the 25/day cap is handled by caching (Phase 7)
+      min-request-interval: 12s              # free tier rejects bursts (1s was too short); 25/day cap → caching (Phase 7)
   llm:
     model: ${LLM_MODEL:llama3.2}             # default fits a local Ollama model
     api-key: ${LLM_API_KEY:}

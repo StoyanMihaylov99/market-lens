@@ -178,13 +178,11 @@ class AlphaVantageMarketDataProviderTest {
     }
 
     @Test
-    void premiumBodyWithHttp200() {
+    void premiumBodyWithHttp200IsTreatedAsRateLimit() {
         stubFor(call("GLOBAL_QUOTE", "symbol", "AAPL")
                 .willReturn(okJson("{\"Information\": \"This is a premium endpoint.\"}")));
 
-        assertThatThrownBy(() -> provider.getFundamentals("AAPL"))
-                .isInstanceOf(ProviderUnavailableException.class)
-                .hasMessageContaining("premium");
+        assertThatThrownBy(() -> provider.getFundamentals("AAPL")).isInstanceOf(ProviderRateLimitedException.class);
     }
 
     @Test

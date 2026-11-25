@@ -136,6 +136,27 @@ docker compose up -d redis
 ./mvnw spring-boot:run
 ```
 
+### Run with mock data (no API key needed)
+
+Alpha Vantage's free tier allows only 25 requests per day, so for demos and day-to-day work the app can talk to a
+[WireMock](https://wiremock.org) container that replays real recorded responses instead:
+
+```bash
+docker compose -f compose.yaml -f compose.mock.yaml up --build
+# or: podman compose -f compose.yaml -f compose.mock.yaml up --build
+
+curl http://localhost:8080/api/v1/companies/AAPL/raw    # also: PLUG
+```
+
+`compose.mock.yaml` adds the WireMock service and switches the app to the `mock` Spring profile
+(`application-mock.yaml`), which points the provider at WireMock with a dummy key — your real key is never used.
+Demo data: `AAPL`, `PLUG` (fundamentals, earnings) and `SPY` (index); any other ticker behaves like an unknown one.
+Recorded data lives in `src/test/resources/fixtures/alphavantage/`, stub mappings in `wiremock/mappings/`.
+
+> `GET /api/v1/companies/{ticker}/raw` is a temporary debug endpoint, available only in the `local` and `mock`
+> profiles. With a real key (`local` profile) one call costs 5 Alpha Vantage requests and takes ~50 s, because the
+> client spaces requests 12 s apart to respect the free tier's burst limit.
+
 ### Quick test
 
 ```bash
