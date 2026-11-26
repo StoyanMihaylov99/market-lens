@@ -7,7 +7,9 @@ import java.util.Objects;
 /**
  * Static description of a listed company.
  *
- * @param currency ISO 4217 code the company reports in (e.g. {@code USD}); may differ from the trading currency for ADRs
+ * @param currency ISO 4217 code the stock <b>trades</b> in, i.e. the currency of {@link Quote#price()} (e.g. {@code USD}).
+ *                 For ADRs it may differ from the statements' reporting currency; the metrics feature relies on this to
+ *                 avoid mixing currencies in valuation ratios
  * @param country  ISO 3166 country code of the company's domicile
  */
 public record CompanyProfile(

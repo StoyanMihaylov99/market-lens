@@ -1,5 +1,5 @@
 # Mock profile: Alpha Vantage is replaced by WireMock replaying recorded fixtures (see compose.mock.yaml).
-# Activate with SPRING_PROFILES_ACTIVE=mock. Also enables the temporary raw endpoint.
+# Activate with SPRING_PROFILES_ACTIVE=mock.
 
 marketlens:
   market-data:

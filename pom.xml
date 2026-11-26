@@ -24,6 +24,7 @@
 		<!-- Versions for libraries Spring Boot does NOT manage -->
 		<spring-ai.version>2.0.2</spring-ai.version>
 		<wiremock.version>3.13.2</wiremock.version>
+		<archunit.version>1.5.1</archunit.version>
 	</properties>
 
 	<!-- Spring AI is not part of Boot's BOM: import its own BOM so all Spring AI modules share one version -->
@@ -92,6 +93,14 @@
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock-standalone</artifactId>
 			<version>${wiremock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ArchUnit: package boundaries (metrics stays pure, vendor types stay in their adapter) as plain unit tests.
+		     Bytecode analysis only, no Spring integration, so no Boot-version coupling -->
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>${archunit.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
