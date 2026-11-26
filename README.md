@@ -145,7 +145,7 @@ Alpha Vantage's free tier allows only 25 requests per day, so for demos and day-
 docker compose -f compose.yaml -f compose.mock.yaml up --build
 # or: podman compose -f compose.yaml -f compose.mock.yaml up --build
 
-curl http://localhost:8080/api/v1/companies/AAPL/raw    # also: PLUG
+curl http://localhost:8080/api/v1/companies/AAPL/fundamentals    # also: PLUG
 ```
 
 `compose.mock.yaml` adds the WireMock service and switches the app to the `mock` Spring profile
@@ -153,9 +153,8 @@ curl http://localhost:8080/api/v1/companies/AAPL/raw    # also: PLUG
 Demo data: `AAPL`, `PLUG` (fundamentals, earnings) and `SPY` (index); any other ticker behaves like an unknown one.
 Recorded data lives in `src/test/resources/fixtures/alphavantage/`, stub mappings in `wiremock/mappings/`.
 
-> `GET /api/v1/companies/{ticker}/raw` is a temporary debug endpoint, available only in the `local` and `mock`
-> profiles. With a real key (`local` profile) one call costs 5 Alpha Vantage requests and takes ~50 s, because the
-> client spaces requests 12 s apart to respect the free tier's burst limit.
+> With a real key, one fundamentals call costs 5 Alpha Vantage requests and takes ~50 s, because the client spaces
+> requests 12 s apart to respect the free tier's burst limit (caching arrives in Phase 7).
 
 ### Quick test
 
@@ -173,6 +172,10 @@ curl http://localhost:8080/api/v1/analysis/AAPL
 | `LLM_MODEL` | Model name | `your-model-id` |
 | `REDIS_HOST` / `REDIS_PORT` | Redis connection | `redis` / `6379` |
 | `CACHE_TTL_MINUTES` | Cache lifetime for analysis results | `60` |
+
+Scoring thresholds and rule weights are not secrets and have no env vars; they live under `marketlens.scoring` in
+`src/main/resources/scoring.yaml`, imported by `application.yaml` (fractions as decimals: `0.05` = 5%). Any Spring property can still be overridden from the
+environment, e.g. `MARKETLENS_SCORING_RECOMMENDATION_BUY=70`.
 
 ## API
 
@@ -208,8 +211,32 @@ Example response:
 | Method | Path | Purpose |
 |---|---|---|
 | `GET` | `/api/v1/market/overview` | Index snapshot and market context |
-| `GET` | `/api/v1/companies/{ticker}/fundamentals` | Raw computed metrics, no LLM |
+| `GET` | `/api/v1/companies/{ticker}/fundamentals` | Computed metrics + rule-based score, no LLM (see below) |
 | `GET` | `/actuator/health` | Health check |
+
+### `GET /api/v1/companies/{ticker}/fundamentals`
+
+Deterministic part of the analysis: metrics computed in Java from the latest statements (TTM = last four quarters)
+and a 0–100 score from configurable rules. Ratios and fractions have 4 decimal places; fractions are decimals
+(`0.2760` = 27.60%). A metric whose inputs are missing or meaningless (e.g. P/E with losses) is `null`.
+A rule without inputs is skipped: it lowers `coverage` and `confidence`, not the score. `LOW` confidence always gives `HOLD`.
+
+```json
+{
+  "ticker": "AAPL",
+  "metrics": { "priceToEarnings": 38.6537, "debtToEquity": 0.7147, "freeCashFlowYield": 0.0266, "netMargin": 0.2760, "…": "…" },
+  "score": { "value": 53, "recommendation": "HOLD", "confidence": "HIGH", "coverage": 1.0000 },
+  "rules": [
+    { "rule": "valuation", "applied": true, "points": 0, "maxPoints": 10, "rationale": "P/E 38.6537 is above 35" },
+    { "rule": "leverage", "applied": true, "points": 7, "maxPoints": 10, "rationale": "Debt-to-equity 0.7147 is at or below 1" }
+  ],
+  "dataAsOf": "2026-11-20T12:00:00Z",
+  "disclaimer": "For information only. … Not financial advice."
+}
+```
+
+Errors are RFC 9457 `application/problem+json`: `400` invalid ticker, `404` unknown ticker,
+`503` market data unavailable or rate limited (with `Retry-After` when known).
 
 ## Project structure
 
@@ -247,11 +274,12 @@ market-lens/
 ./mvnw verify    # + integration tests (Testcontainers needs Docker/Podman socket)
 ```
 
-- Metrics engine and scoring: pure unit tests
+- Metrics engine and scoring: pure unit tests, plus golden tests on recorded `AAPL`/`PLUG` data
+- Package boundaries: ArchUnit (`ArchitectureTest`)
 - Provider clients: in-process WireMock (runs inside the test JVM, no Docker), no real API calls in CI
 - LLM layer: mocked `ChatClient`; prompt and output-mapping tests
 - Redis: Testcontainers (`*IT`, needs a Docker/Podman socket)
-- Demo / manual runs without API keys (planned): `docker compose --profile mock up` serves fake market data from a WireMock container
+- Demo / manual runs without API keys: see [Run with mock data](#run-with-mock-data-no-api-key-needed)
 
 ## License
 

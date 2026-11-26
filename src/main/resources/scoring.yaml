@@ -1,0 +1,34 @@
+# Rule-based scoring model: thresholds and weights (bound to ScoringProperties, package analysis.scoring).
+# Imported by application.yaml (spring.config.import). Kept apart from deployment config because these values tune the
+# model, not the environment; Phase 11 backtesting will adjust them.
+#
+# Units: fractions are decimals (0.05 = 5%), multiples are plain (15 = 15x). Thresholds must be strictly increasing,
+# otherwise the app refuses to start. Override per environment like any Spring property, e.g.
+# MARKETLENS_SCORING_RECOMMENDATION_BUY=70.
+
+marketlens:
+  scoring:
+    recommendation:
+      buy: 65                                # score >= 65 → BUY
+      sell: 40                               # score <= 40 → SELL; LOW confidence always → HOLD
+    confidence:                              # coverage = share of rules that had enough data to run
+      high: 0.8
+      medium: 0.5
+    valuation:                               # GAAP P/E: <= cheap strong, <= fair good, <= expensive weak, above poor
+      max-points: 10                         # max-points = rule weight; equal weights for now (decision D4)
+      cheap: 15
+      fair: 25
+      expensive: 35
+    leverage:                                # debt-to-equity: <= low strong, <= moderate good, <= high weak
+      max-points: 10
+      low: 0.5
+      moderate: 1.0
+      high: 2.0
+    cash-flow:                               # FCF yield: >= high strong, >= moderate good, positive weak, FCF <= 0 poor
+      max-points: 10
+      moderate-yield: 0.03
+      high-yield: 0.05
+    profitability:                           # TTM net margin: >= high strong, >= moderate good, positive weak
+      max-points: 10
+      moderate-margin: 0.10
+      high-margin: 0.20

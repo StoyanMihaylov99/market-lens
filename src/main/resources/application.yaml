@@ -1,6 +1,8 @@
 spring:
   application:
     name: market-lens
+  config:
+    import: classpath:scoring.yaml           # scoring thresholds and weights (model tuning, not deployment config)
   data:
     redis:                                   # used once the Redis starter is added (Phase 7)
       host: ${REDIS_HOST:localhost}
